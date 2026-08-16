@@ -88,5 +88,12 @@ return {
             mousePos[2] > gridSizeY
         then return nil end
         return bindToGrid(grid, mousePos)
+    end,
+
+    spawnCell = function(cell, state)
+        if not cell then return end
+        if cell[3] ~= 0 then return nil end
+        cell[3] = state
+        return true
     end
 }

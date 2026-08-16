@@ -29,9 +29,16 @@ function love.mousemoved(x, y)
     )
 end
 
-function love.mousepressed(key, scancode, isrepeat)
-    if key == state.placeKey and not isrepeat then
-        
+local players = 2
+local turn = 1
+function love.mousepressed(x, y, button, istouch, presses)
+    if button ~= state.placeKey then return end
+    if grid.spawnCell(
+        state.selectedCell,
+        turn
+    )
+    then
+        turn = (turn % players) + 1
     end
 end
 

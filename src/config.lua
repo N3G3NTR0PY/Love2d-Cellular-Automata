@@ -1,8 +1,8 @@
 local colors = require "src.colors"
 
 return {
-    cellSize = 40,
-    gridLineWidth = 5,
+    cellSize = 25,
+    gridLineWidth = 4,
 
     backgroundColor = colors.background,
     gridColor = colors.grid_line,
@@ -10,5 +10,5 @@ return {
     player1Color = colors.player_one,
     player2Color = colors.player_two,
 
-    placeKey = '1'
+    placeKey = 1
 }
