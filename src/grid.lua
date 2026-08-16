@@ -1,22 +1,6 @@
 local function bindToGrid(grid, pos)
-    local row = math.ceil(
-        math.min(
-            math.max(
-                pos[2] / grid.cellSize,
-                1
-            ),
-            #grid
-        )
-    )
-    local column = math.ceil(
-        math.min(
-            math.max(
-                pos[1] / grid.cellSize,
-                1
-            ),
-            #grid[1]
-        )
-    )
+    local row = math.ceil(pos[2] / grid.cellSize)
+    local column = math.ceil(pos[1] / grid.cellSize)
 
     return grid[row][column]
 end
@@ -59,18 +43,18 @@ return {
         end
     end,
 
-    drawMouseSelection = function(grid, mousePos, color, lineWidth)
+    drawMouseSelection = function(grid, selectedCell, color, lineWidth)
+        if not selectedCell then
+            return
+        end
         love.graphics.setColor(color)
         love.graphics.setLineWidth(lineWidth)
-
-        if mousePos then
-            love.graphics.rectangle(
-                'line',
-                bindToGrid(grid, mousePos)[1],
-                bindToGrid(grid, mousePos)[2],
-                grid.cellSize, grid.cellSize
-            )
-        end
+        love.graphics.rectangle(
+            'line',
+            selectedCell[1],
+            selectedCell[2],
+            grid.cellSize, grid.cellSize
+        )
     end,
 
     drawCells = function(grid, team1Color, team2Color)
@@ -92,4 +76,17 @@ return {
             end
         end
     end,
+
+    updateSelectedCell = function(grid, mousePos)
+        local gridSizeX = #grid * grid.cellSize
+        local gridSizeY = #grid[1] * grid.cellSize
+        if
+            not mousePos or
+            mousePos[1] < 1 or
+            mousePos[1] > gridSizeX or
+            mousePos[2] < 1 or
+            mousePos[2] > gridSizeY
+        then return nil end
+        return bindToGrid(grid, mousePos)
+    end
 }
