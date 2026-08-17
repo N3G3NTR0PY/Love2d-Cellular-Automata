@@ -78,8 +78,8 @@ return {
     end,
 
     updateSelectedCell = function(grid, mousePos)
-        local gridSizeX = #grid * grid.cellSize
-        local gridSizeY = #grid[1] * grid.cellSize
+        local gridSizeX = #grid[1] * grid.cellSize
+        local gridSizeY = #grid * grid.cellSize
         if
             not mousePos or
             mousePos[1] < 1 or
@@ -95,5 +95,58 @@ return {
         if cell[3] ~= 0 then return nil end
         cell[3] = state
         return true
+    end,
+
+    updateGrid = function(grid)
+        local futureGrid = {}
+
+        for row = 1, #grid do
+            futureGrid[row] = {}
+            for column = 1, #grid[1] do
+                futureGrid[row][column] = {}
+                local aliveNeighbours = {0, 0}
+                for neighbourRow = row - 1, row + 1 do
+                    for neighbourColumn = column -1, column + 1 do
+                        if
+                            grid[neighbourRow] and
+                            grid[neighbourRow][neighbourColumn] and
+                            grid[neighbourRow][neighbourColumn] ~= grid[row][column] and
+                            grid[neighbourRow][neighbourColumn][3] == 1
+                        then
+                            aliveNeighbours[1] = aliveNeighbours[1] + 1
+                        elseif
+                            grid[neighbourRow] and
+                            grid[neighbourRow][neighbourColumn] and
+                            grid[neighbourRow][neighbourColumn] ~= grid[row][column] and
+                            grid[neighbourRow][neighbourColumn][3] == 2
+                        then
+                            aliveNeighbours[2] = aliveNeighbours[2] + 1
+                        end
+                    end
+                end
+                local newState = 0
+                local totalNeighbours = aliveNeighbours[1] + aliveNeighbours[2]
+                if grid[row][column][3] == 0 then
+                    if totalNeighbours == 3 then
+                        if aliveNeighbours[1] > aliveNeighbours[2] then
+                            newState = 1
+                        elseif aliveNeighbours[2] > aliveNeighbours[1] then
+                            newState = 2
+                        end
+                    end
+                elseif totalNeighbours == 2 or totalNeighbours == 3 then
+                    newState = grid[row][column][3]
+                else
+                    newState = 0
+                end
+                futureGrid[row][column][3] = newState
+            end
+        end
+
+        for row = 1, #grid do
+            for column = 1, #grid[1] do
+                grid[row][column][3] = futureGrid[row][column][3]
+            end
+        end
     end
 }

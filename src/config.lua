@@ -10,5 +10,8 @@ return {
     player1Color = colors.player_one,
     player2Color = colors.player_two,
 
-    placeKey = 1
+    updateInterval = 0.25,
+
+    placeKey = 1,
+    pauseKey = 'space'
 }

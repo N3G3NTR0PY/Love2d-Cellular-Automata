@@ -29,16 +29,22 @@ function love.mousemoved(x, y)
     )
 end
 
-local players = 2
+local paused = true
+function love.keypressed(key)
+    if key == state.pauseKey then
+        paused = not paused
+    end
+end
+
 local turn = 1
 function love.mousepressed(x, y, button, istouch, presses)
-    if button ~= state.placeKey then return end
+    if button ~= state.placeKey or not paused then return end
     if grid.spawnCell(
         state.selectedCell,
         turn
     )
     then
-        turn = (turn % players) + 1
+        turn = (turn % 2) + 1
     end
 end
 
@@ -62,6 +68,11 @@ function love.draw()
     )
 end
 
+local updateTimer = 0
 function love.update(dt)
-
+    updateTimer = updateTimer + dt
+    if not paused and updateTimer >= state.updateInterval then
+        grid.updateGrid(state.currentGrid)
+        updateTimer = 0
+    end
 end

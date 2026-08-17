@@ -1,11 +1,11 @@
 function love.conf(t)
     -- Identity and version
-    t.identity = "Cellular-Automata"            -- Save directory name
+    t.identity = "Immigration-Life"             -- Save directory name
     t.version = "11.5"                          -- LOVE version compatibility
     t.console = false                           -- Enable console on Windows (debug)
 
     -- Window settings
-    t.window.title = "Cellular Automata"        -- Window title
+    t.window.title = "Immigration Life"         -- Window title
     t.window.icon = nil                         -- Path to icon image
     t.window.width = 800                        -- Window width
     t.window.height = 800                       -- Window height
